@@ -1,4 +1,4 @@
-package com.qamadness.steps;
+package com.qamadness.steps.front_end_steps;
 
 import com.qamadness.pages.front_end.HomePage;
 import net.thucydides.core.annotations.Step;
@@ -88,4 +88,31 @@ public class HomePageSteps extends ScenarioSteps {
     public void open_Pending_Requests_Page (){
         homePage.clickPendingRequestsLink();
     }
+
+    @Step
+    public void expand_Select_Different_User_Block (){
+        homePage.expandSelectDifferentUserTab();
+    }
+
+    @Step
+    public void select_Different_User (String userName){
+        homePage.selectDifferentUser(userName);
+    }
+
+    @Step
+    public void check_Acting_User (String userName){
+        homePage.checkActingUser(userName);
+    }
+
+    @Step
+    public void expand_Approvals_Block (){
+        homePage.expandApprovalsTab();
+    }
+
+    @Step
+    public void open_Approve_a_Request_Page (){
+        homePage.clickApproveARequestLink();
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package com.qamadness.steps;
+package com.qamadness.steps.front_end_steps;
 
 import com.qamadness.pages.front_end.ShopBySupplierPage;
 import net.thucydides.core.annotations.Step;

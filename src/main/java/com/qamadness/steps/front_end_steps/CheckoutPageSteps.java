@@ -1,4 +1,4 @@
-package com.qamadness.steps;
+package com.qamadness.steps.front_end_steps;
 
 import com.qamadness.pages.front_end.CheckoutPage;
 import net.thucydides.core.annotations.Step;
@@ -68,6 +68,31 @@ public class CheckoutPageSteps extends ScenarioSteps {
     @Step
     public void enter_Accounting_Project (String projectCode){
         checkoutPage.enterAccountingProject(projectCode);
+    }
+
+    @Step
+    public void enter_Accounting_Task (String taskCode){
+        checkoutPage.enterAccountingTask(taskCode);
+    }
+
+    @Step
+    public void enter_Accounting_Award (String awardCode){
+        checkoutPage.enterAccountingAward(awardCode);
+    }
+
+    @Step
+    public void enter_Accounting_Expenditure (String expenditureCode){
+        checkoutPage.enterAccountingExpenditure(expenditureCode);
+    }
+
+    @Step
+    public void save_Accounting_Changes (){
+        checkoutPage.clickSaveChangesButton();
+    }
+
+    @Step
+    public void select_Needed_By_Day(){
+        checkoutPage.selectNeededByDate();
     }
 
 /* ============================================ Steps for Approval Chain tab ======================================== */

@@ -1,15 +1,18 @@
 package com.qamadness.pages.front_end;
 
+import groovy.transform.ToString;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.pages.PageObject;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -46,19 +49,35 @@ public class CheckoutPage extends PageObject {
     @FindBy (xpath = "//div[@id='select2-drop']/ul/li[1]/div/address")
     WebElementFacade addressOption;
 
-    @FindBy (xpath = "//div[@id='shipping-buttons-container']/div/button[2]")
-    WebElementFacade continueToApprovalChainBtn;
-
     @FindBy (xpath = "//div[@class='accounting-container']/div[3]/div/div/dl/dd[5]/ul/li[1]/a")
     WebElementFacade accountingEditLink;
 
     @FindBy (xpath = "//div[@class='accounting-form']/div[1]/div/a")
     WebElementFacade projectDropDown;
 
+    @FindBy (xpath = "//div[@class='accounting-form']/div[2]/div/a")
+    WebElementFacade taskDropDown;
+
+    @FindBy (xpath = "//div[@class='accounting-form']/div[3]/div/a")
+    WebElementFacade awardDropDown;
+
+    @FindBy (xpath = "//div[@class='accounting-form']/div[4]/div/a")
+    WebElementFacade expenditureDropDown;
+
     @FindBy (xpath = ".//*[@id='select2-drop']/div/input")
-    WebElementFacade projectSearchField;
+    WebElementFacade accountingSearchField;
 
+    @FindBy (xpath = ".//li[@class='select2-results-dept-0 select2-result select2-result-selectable select2-highlighted']/div")
+    WebElementFacade accountingSearchResult;
 
+    @FindBy (xpath = ".//div[@class='accounting-form']/div[6]/a[1]")
+    WebElementFacade saveChangesBtn;
+
+    @FindBy (xpath = "//div[@class='shipping']/div[2]/div[1]/div/span")
+    WebElementFacade neededByCalendarBtn;
+
+    @FindBy (xpath = "//div[@id='shipping-buttons-container']/div/button[2]")
+    WebElementFacade continueToApprovalChainBtn;
 
 /* =========================================== Objects for Approval Chain tab ======================================= */
 
@@ -87,7 +106,7 @@ public class CheckoutPage extends PageObject {
     WebElementFacade firstApprover;
 
     @FindBy (xpath = "//div[@id='approvers-buttons-container']/div/button[2]")
-    WebElementFacade continueToReviewRtn;
+    WebElementFacade continueToReviewBtn;
 
 
 /* =============================================== Objects for Review tab =========================================== */
@@ -171,10 +190,62 @@ public class CheckoutPage extends PageObject {
     public void enterAccountingProject (String projectCode){
         projectDropDown.click();
         WebDriverWait wait = new WebDriverWait(getDriver(), 60);
-        wait.until(ExpectedConditions.visibilityOf(projectSearchField));
-        projectSearchField.type(projectCode);
-        projectSearchField.sendKeys(Keys.ENTER);
+        wait.until(ExpectedConditions.visibilityOf(accountingSearchField));
+        accountingSearchField.type(projectCode);
+        wait.until(ExpectedConditions.textToBePresentInElement(accountingSearchResult, projectCode));
+        accountingSearchResult.click();
     }
+
+    public void enterAccountingTask (String taskCode){
+        taskDropDown.click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOf(accountingSearchField));
+        accountingSearchField.type(taskCode);
+        wait.until(ExpectedConditions.textToBePresentInElement(accountingSearchResult, taskCode));
+        accountingSearchResult.click();
+    }
+
+    public void enterAccountingAward (String awardCode){
+        awardDropDown.click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOf(accountingSearchField));
+        accountingSearchField.type(awardCode);
+        wait.until(ExpectedConditions.textToBePresentInElement(accountingSearchResult, awardCode));
+        accountingSearchResult.click();
+    }
+
+    public void enterAccountingExpenditure (String expenditureCode){
+        expenditureDropDown.click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOf(accountingSearchField));
+        accountingSearchField.type(expenditureCode);
+        wait.until(ExpectedConditions.textToBePresentInElement(accountingSearchResult, expenditureCode));
+        accountingSearchResult.click();
+    }
+
+    public void clickSaveChangesButton (){
+        saveChangesBtn.click();
+    }
+
+    public void selectNeededByDate (){
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.elementToBeClickable(neededByCalendarBtn));
+        neededByCalendarBtn.click();
+        DateFormat dateFormat = new SimpleDateFormat("dd");
+        Calendar cal = Calendar.getInstance();
+        int currentDate = Integer.parseInt(dateFormat.format(cal.getTime()));
+        if (currentDate <= 27){
+            int neededByDate = currentDate+2;
+            String neededByDateStr = Integer.toString(neededByDate);
+            System.out.println(neededByDateStr);
+            getDriver().findElement(By.xpath("//div[@class='datepicker-days']/table/tbody/tr/td[@class='day' and contains(text(), '" + neededByDateStr + "')]")).click();
+        } else {
+            getDriver().findElement(By.xpath("//div[@class='datepicker-days']/table/tbody/tr/td[@class='new day' and contains(text(), '1')]")).click();
+        }
+
+    }
+
+
 
 /* =========================================== Methods for Approval Chain tab ======================================= */
 
@@ -228,7 +299,7 @@ public class CheckoutPage extends PageObject {
     }
 
     public void clickContinueToReviewBtn (){
-        continueToReviewRtn.click();
+        continueToReviewBtn.click();
     }
 
 /* =============================================== Methods for Review tab =========================================== */

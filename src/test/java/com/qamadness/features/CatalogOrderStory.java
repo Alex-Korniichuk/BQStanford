@@ -1,10 +1,10 @@
 package com.qamadness.features;
 
-import com.qamadness.steps.*;
+import com.qamadness.steps.back_end_steps.AdminLoginPageSteps;
+import com.qamadness.steps.front_end_steps.*;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.thucydides.core.annotations.Issue;
 import net.thucydides.core.annotations.Managed;
-import net.thucydides.core.annotations.Pending;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.junit.annotations.UseTestDataFrom;
 import org.junit.Before;
@@ -21,6 +21,8 @@ public class CatalogOrderStory {
 
     private String email;
     private String password;
+    private String adminLogin;
+    private  String adminPassword;
 
     @Managed(uniqueSession = true)
     public WebDriver webdriver;
@@ -39,6 +41,15 @@ public class CatalogOrderStory {
 
     @Steps
     public CheckoutPageSteps checkoutPageSteps;
+
+    @Steps
+    public RequestsToApprovePageSteps requestsToApprovePageSteps;
+
+    @Steps
+    public ApproveRequestDetailsPageSteps approveRequestDetailsPageSteps;
+
+    @Steps
+    public AdminLoginPageSteps adminLoginPageSteps;
 
     @Before
     public void loginToSite(){
@@ -65,5 +76,33 @@ public class CatalogOrderStory {
         checkoutPageSteps.wait_Till_Shipping_Step_Is_Uploaded();
         checkoutPageSteps.click_Accounting_Edit_Link();
         checkoutPageSteps.enter_Accounting_Project("1095250");
+        checkoutPageSteps.enter_Accounting_Task("205");
+        checkoutPageSteps.enter_Accounting_Award("AABPU");
+        checkoutPageSteps.enter_Accounting_Expenditure("55230");
+        checkoutPageSteps.save_Accounting_Changes();
+        checkoutPageSteps.select_Needed_By_Day();
+        checkoutPageSteps.continue_To_Approval_Chain();
+        checkoutPageSteps.wait_Till_Approval_Chain_Step_Is_Uploaded();
+        checkoutPageSteps.continue_To_Review();
+        checkoutPageSteps.wait_Till_Review_Step_Is_Uploaded();
+        checkoutPageSteps.submit_Order();
+        checkoutPageSteps.wait_Till_Success_Page_Is_Uploaded();
+        String expectedID = checkoutPageSteps.get_Request_ID();
+        homePageSteps.click_Main_Menu_Btn();
+        homePageSteps.expand_Select_Different_User_Block();
+        homePageSteps.select_Different_User("Randy Durante");
+        homePageSteps.click_Main_Menu_Btn();
+        homePageSteps.check_Acting_User("Randy Durante");
+        homePageSteps.expand_My_Documents_Tab();
+        homePageSteps.expand_Approvals_Block();
+        homePageSteps.open_Approve_a_Request_Page();
+        requestsToApprovePageSteps.search_Request_By_ID(expectedID);
+        requestsToApprovePageSteps.check_Search_Results(expectedID);
+        requestsToApprovePageSteps.open_Request_Details_Page();
+        approveRequestDetailsPageSteps.approve_Request();
+        adminLoginPageSteps.open_Page();
+        adminLoginPageSteps.enter_Credentials(adminLogin,adminPassword);
+        adminLoginPageSteps.click_Login_Btn();
+
     }
 }

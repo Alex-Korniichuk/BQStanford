@@ -58,6 +58,27 @@ public class HomePage extends PageObject {
     @FindBy (xpath = ".//*[@id='nav-collapse-sl-12']/li[1]/a")
     WebElementFacade pendingRequestsLink;
 
+    @FindBy (xpath = "//a[@aria-controls='nav-welcome-switch']")
+    WebElementFacade selectDifferentUserTab;
+
+    @FindBy (xpath = ".//ul[@id='nav-welcome-switch']/li/div/a")
+    WebElementFacade choseUserDropDown;
+
+    @FindBy (css = ".select2-input.select2-focused")
+    WebElementFacade searchUserField;
+
+    @FindBy (xpath = ".//div[@id='select2-drop']/ul/li[2]/div/span")
+    WebElementFacade userSearchResult;
+
+    @FindBy (xpath = ".//div[@class='customer-account-info']/div/small/strong")
+    WebElementFacade actingUserLabel;
+
+    @FindBy (xpath = ".//*[@id='nav-collapse-top-1']/li[2]/a")
+    WebElementFacade approvalsTab;
+
+    @FindBy (xpath = ".//*[@id='nav-collapse-sl-13']/li[1]/a")
+    WebElementFacade approveRequestLink;
+
     public HomePage() {}
 
     public void checkIsUserLoggedIn (){
@@ -147,6 +168,40 @@ public class HomePage extends PageObject {
 
     public void clickPendingRequestsLink (){
         pendingRequestsLink.click();
+    }
+
+    public void expandSelectDifferentUserTab (){
+        String tabState = selectDifferentUserTab.getAttribute("class");
+        System.out.println(tabState);
+        if (tabState.equalsIgnoreCase("collapsed")){
+            selectDifferentUserTab.click();
+        }
+
+    }
+
+    public void selectDifferentUser (String userName){
+        choseUserDropDown.click();
+        searchUserField.type(userName);
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.textToBePresentInElement(userSearchResult, userName));
+        userSearchResult.click();
+    }
+
+    public void checkActingUser (String userName){
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.textToBePresentInElement(actingUserLabel, userName));
+    }
+
+    public void expandApprovalsTab (){
+        String tabState = approvalsTab.getAttribute("class");
+        System.out.println(tabState);
+        if (tabState.equalsIgnoreCase("collapsed")){
+            approvalsTab.click();
+        }
+    }
+
+    public void clickApproveARequestLink (){
+        approveRequestLink.click();
     }
 
 
