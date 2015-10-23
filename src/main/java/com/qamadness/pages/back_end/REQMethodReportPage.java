@@ -35,6 +35,6 @@ public class REQMethodReportPage extends PageObject {
         System.out.println(elementID);
         String script = "document.getElementById('" + elementID + "').style.display = 'block';";
         ((JavascriptExecutor) getDriver()).executeAsyncScript(script);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("prettyprint")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(elementID)));
     }
 }

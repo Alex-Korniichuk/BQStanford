@@ -63,18 +63,18 @@ public class CatalogOrderStory  {
     @Steps
     public REQMethodReportPageSteps reqMethodReportPageSteps;
 
-    /*@Before
+    @Before
     public void loginToSite(){
         loginSteps.open_Page();
         loginSteps.enter_Credentials(email,password);
         loginSteps.click_Login_Btn();
         homePageSteps.check_Is_User_Logged_In();
-    }*/
+    }
 
     @Issue("AUT-58")
     @Test
     public void unit_price_of_item_less_than_5000_Req_total_does_not_matter (){
-        /* homePageSteps.click_Main_Menu_Btn();
+        homePageSteps.click_Main_Menu_Btn();
         homePageSteps.expand_Product_And_Services_Tab();
         homePageSteps.click_Shop_By_Supplier_Link();
         shopBySupplierPageSteps.find_supplier_with_products_that_have_price_lower_than("5000");
@@ -111,7 +111,7 @@ public class CatalogOrderStory  {
         requestsToApprovePageSteps.search_Request_By_ID(expectedID);
         requestsToApprovePageSteps.check_Search_Results(expectedID);
         requestsToApprovePageSteps.open_Request_Details_Page();
-        approveRequestDetailsPageSteps.approve_Request(); */
+        approveRequestDetailsPageSteps.approve_Request();
         // Admin part of the test case
         adminLoginPageSteps.open_Page();
         adminLoginPageSteps.enter_Credentials(adminLogin,adminPassword);
@@ -120,7 +120,7 @@ public class CatalogOrderStory  {
         dashboardPageSteps.click_Show_Menu_Button();
         dashboardPageSteps.expand_System_Menu_Block();
         dashboardPageSteps.open_REQ_Method_Report_Page();
-        reqMethodReportPageSteps.findRequest("REQ-00704");
+        reqMethodReportPageSteps.findRequest(expectedID);
         reqMethodReportPageSteps.clickShowDataLink();
 
     }
