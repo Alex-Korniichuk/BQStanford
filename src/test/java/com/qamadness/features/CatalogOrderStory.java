@@ -120,6 +120,7 @@ public class CatalogOrderStory  {
         dashboardPageSteps.click_Show_Menu_Button();
         dashboardPageSteps.expand_System_Menu_Block();
         dashboardPageSteps.open_REQ_Method_Report_Page();
+        reqMethodReportPageSteps.findRequest("REQ");
         reqMethodReportPageSteps.findRequest(expectedID);
         reqMethodReportPageSteps.clickShowDataLink();
 
