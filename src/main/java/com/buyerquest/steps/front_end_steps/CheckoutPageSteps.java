@@ -3,6 +3,9 @@ package com.buyerquest.steps.front_end_steps;
 import com.buyerquest.pages.front_end.CheckoutPage;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+import org.yecht.Data;
+
+import java.util.List;
 
 /**
  * Created by alexandrakorniichuk on 20.10.15.
@@ -131,6 +134,16 @@ public class CheckoutPageSteps extends ScenarioSteps {
     @Step
     public void continue_To_Review (){
         checkoutPage.clickContinueToReviewBtn();
+    }
+
+    @Step
+    public String get_First_Approver_Name (){
+        return checkoutPage.getFirstApproverName();
+    }
+
+    @Step
+    public List<String> get_Approvers_Names () {
+        return checkoutPage.getApproversNames();
     }
 
 /* ================================================ Steps for Review tab ============================================ */

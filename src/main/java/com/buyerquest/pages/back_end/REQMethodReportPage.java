@@ -20,6 +20,9 @@ public class REQMethodReportPage extends PageObject {
     @FindBy (id = "buyerquestReqreportGrid_filter_message")
     WebElementFacade messageField;
 
+    @FindBy (id = "buyerquestReqreportGrid_filter_order_id")
+    WebElementFacade orderIDField;
+
     @FindBy (xpath = ".//*[@id='buyerquestReqreportGrid_table']/tbody/tr[1]/td[4]/a")
     WebElementFacade showDataink;
 
@@ -37,10 +40,19 @@ public class REQMethodReportPage extends PageObject {
         messageField.sendKeys(Keys.ENTER);
     }
 
-    public void clickShowDataLink(){
+    public void clickShowDataLink(String expectedID) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(getDriver(), 60);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loading-mask")));
-        showDataink.click();
+        if (showDataink.isVisible()){
+        showDataink.click();} else {
+            synchronized (getDriver())
+            {
+                getDriver().wait(1000);
+            }
+            this.searchRequestByID(expectedID);
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loading-mask")));
+            showDataink.click();
+        }
     }
 
     public void displayData (){

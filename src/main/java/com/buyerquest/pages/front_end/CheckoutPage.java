@@ -11,7 +11,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -106,6 +108,9 @@ public class CheckoutPage extends PageObject {
 
     @FindBy (xpath = "//div[@id='approvers-buttons-container']/div/button[2]")
     WebElementFacade continueToReviewBtn;
+
+    @FindBy (xpath = "//div[@class='approval-chain']/div[1]/div[3]/div[@class='node-content']/h6")
+    WebElementFacade firstApproverName;
 
 
 /* =============================================== Objects for Review tab =========================================== */
@@ -299,6 +304,29 @@ public class CheckoutPage extends PageObject {
 
     public void clickContinueToReviewBtn (){
         continueToReviewBtn.click();
+    }
+
+    public String getFirstApproverName (){
+        return firstApproverName.getText();
+    }
+
+    public List<String> getApproversNames () {
+        String [] approversNames = {};
+        int size = getDriver().findElements(By.cssSelector(".chain-node")).size();
+
+        System.out.println(" elements to request : " + size);
+
+        int counter = 1;
+        List<String> accum = new ArrayList<String>();
+        while (size >= counter) {
+
+            accum.add(getDriver().findElement(By.xpath(".//div[@class='approval-chain']/div/div[@data-init='true']["+counter+"]/div[3]/h6")).getText());
+
+            System.out.println(" element " + counter +" with value : " + accum.get(accum.size() -1));
+
+            counter++;
+        }
+        return accum;
     }
 
 /* =============================================== Methods for Review tab =========================================== */

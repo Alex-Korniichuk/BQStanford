@@ -17,8 +17,8 @@ public class REQMethodReportPageSteps extends ScenarioSteps {
     }
 
     @Step
-    public void clickShowDataLink (){
-        reqMethodReportPage.clickShowDataLink();
+    public void clickShowDataLink (String expectedID) throws InterruptedException{
+        reqMethodReportPage.clickShowDataLink(expectedID);
     }
 
     @Step

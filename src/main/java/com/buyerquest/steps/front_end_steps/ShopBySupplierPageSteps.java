@@ -42,5 +42,10 @@ public class ShopBySupplierPageSteps extends ScenarioSteps {
     public void find_supplier_with_products_that_have_price_lower_than (String maxPrice){
         shopBySupplierPage.findSupplierWithProductsThatHavePriceLowerThan(maxPrice);
     }
+
+    @Step
+    public void find_supplier_with_products_that_have_price_higher_than (String minPrice){
+        shopBySupplierPage.findSupplierWithProductsThatHavePriceHigherThan(minPrice);
+    }
 }
 

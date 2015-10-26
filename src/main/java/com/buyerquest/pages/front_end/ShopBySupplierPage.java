@@ -131,6 +131,23 @@ public class ShopBySupplierPage extends PageObject {
         }
     }
 
+    public void findSupplierWithProductsThatHavePriceHigherThan (String minPrice){
+        setImplicitTimeout(60, TimeUnit.SECONDS);
+        int suppliersQty = getDriver().findElements(By.xpath("//ul[@id='supplierList']/li")).size();
+        for (int i=1; i<=suppliersQty; i++){
+            waitForRenderedElementsToBePresent(By.xpath("//ul[@id='supplierList']/li[" + i + "]/div/div/a"));
+            getDriver().findElement(By.xpath("//ul[@id='supplierList']/li["+i+"]/div/div/a")).click();
+            if(getDriver().findElements(By.xpath("//div[@class='product-item']")).size()>2){
+                this.filterProductsByPrice(minPrice, "100000");
+                if(getDriver().findElements(By.xpath("//div[@class='product-item']")).size()>2){
+                    System.out.print("Category has products with price higher then" + minPrice);
+                    break;
+                }else{getDriver().navigate().back();}
+            }else{
+                getDriver().navigate().back();}
+        }
+    }
+
 }
 
 
