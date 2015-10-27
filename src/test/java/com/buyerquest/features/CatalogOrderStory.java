@@ -70,16 +70,24 @@ public class CatalogOrderStory  {
         loginSteps.enter_Credentials(email,password);
         loginSteps.click_Login_Btn();
         homePageSteps.check_Is_User_Logged_In();
+        if (homePageSteps.check_Is_Shopping_Cart_Empty() == false){
+            homePageSteps.open_Shopping_Cart();
+            shoppingCartPageSteps.clear_Cart();
+        }
     }
 
     @Issue("AUT-58")
     @Test
     public void unit_price_of_item_less_than_5000_Req_total_does_not_matter () throws InterruptedException{
-        homePageSteps.click_Main_Menu_Btn();
-        homePageSteps.expand_Product_And_Services_Tab();
-        homePageSteps.click_Shop_By_Supplier_Link();
-        shopBySupplierPageSteps.find_supplier_with_products_that_have_price_lower_than("5000");
-        shopBySupplierPageSteps.add_Product_To_Cart();
+        if (homePageSteps.search_Product_By_SKU("101123") == true) {
+            shopBySupplierPageSteps.add_Product_To_Cart();
+        } else {
+            homePageSteps.click_Main_Menu_Btn();
+            homePageSteps.expand_Product_And_Services_Tab();
+            homePageSteps.click_Shop_By_Supplier_Link();
+            shopBySupplierPageSteps.find_supplier_with_products_that_have_price_lower_than("5000");
+            shopBySupplierPageSteps.add_Product_To_Cart();
+        }
         homePageSteps.open_Shopping_Cart();
         shoppingCartPageSteps.check_Is_Product_In_The_Cart();
         shoppingCartPageSteps.click_Proceed_To_Checkout_Button();
@@ -96,24 +104,30 @@ public class CatalogOrderStory  {
         checkoutPageSteps.select_Needed_By_Day();
         checkoutPageSteps.continue_To_Approval_Chain();
         checkoutPageSteps.wait_Till_Approval_Chain_Step_Is_Uploaded();
-        String approverName = checkoutPageSteps.get_First_Approver_Name();
+        List<String> approversNames = checkoutPageSteps.get_Approvers_Names();
+        int approversQty = approversNames.size();
+        System.out.println("Approvers qty: " + approversQty);
         checkoutPageSteps.continue_To_Review();
         checkoutPageSteps.wait_Till_Review_Step_Is_Uploaded();
         checkoutPageSteps.submit_Order();
         checkoutPageSteps.wait_Till_Success_Page_Is_Uploaded();
         String expectedID = checkoutPageSteps.get_Request_ID();
+        for (int i=0; i<approversQty; i++){
+            homePageSteps.click_Main_Menu_Btn();
+            homePageSteps.expand_Select_Different_User_Block();
+            homePageSteps.select_Different_User(approversNames.get(i));
+            homePageSteps.click_Main_Menu_Btn();
+            homePageSteps.check_Acting_User(approversNames.get(i));
+            homePageSteps.expand_My_Documents_Tab();
+            homePageSteps.expand_Approvals_Block();
+            homePageSteps.open_Approve_a_Request_Page();
+            requestsToApprovePageSteps.search_Request_By_ID(expectedID);
+            requestsToApprovePageSteps.check_Search_Results(expectedID);
+            requestsToApprovePageSteps.open_Request_Details_Page();
+            approveRequestDetailsPageSteps.approve_Request();
+        }
         homePageSteps.click_Main_Menu_Btn();
-        homePageSteps.expand_Select_Different_User_Block();
-        homePageSteps.select_Different_User(approverName);
-        homePageSteps.click_Main_Menu_Btn();
-        homePageSteps.check_Acting_User(approverName);
-        homePageSteps.expand_My_Documents_Tab();
-        homePageSteps.expand_Approvals_Block();
-        homePageSteps.open_Approve_a_Request_Page();
-        requestsToApprovePageSteps.search_Request_By_ID(expectedID);
-        requestsToApprovePageSteps.check_Search_Results(expectedID);
-        requestsToApprovePageSteps.open_Request_Details_Page();
-        approveRequestDetailsPageSteps.approve_Request();
+        homePageSteps.logout();
         // Admin part of the test case
         adminLoginPageSteps.open_Page();
         adminLoginPageSteps.enter_Credentials(adminLogin,adminPassword);
@@ -134,11 +148,15 @@ public class CatalogOrderStory  {
     @Issue("AUT-59")
     @Test
     public void unit_price_of_item_more_than_5000_Req_total_does_not_matter () throws InterruptedException {
-        homePageSteps.click_Main_Menu_Btn();
-        homePageSteps.expand_Product_And_Services_Tab();
-        homePageSteps.click_Shop_By_Supplier_Link();
-        shopBySupplierPageSteps.find_supplier_with_products_that_have_price_higher_than("6000");
-        shopBySupplierPageSteps.add_Product_To_Cart();
+        if (homePageSteps.search_Product_By_SKU("G9683B") == true) {
+            shopBySupplierPageSteps.add_Product_To_Cart();
+        } else {
+            homePageSteps.click_Main_Menu_Btn();
+            homePageSteps.expand_Product_And_Services_Tab();
+            homePageSteps.click_Shop_By_Supplier_Link();
+            shopBySupplierPageSteps.find_supplier_with_products_that_have_price_higher_than("6000");
+            shopBySupplierPageSteps.add_Product_To_Cart();
+        }
         homePageSteps.open_Shopping_Cart();
         shoppingCartPageSteps.check_Is_Product_In_The_Cart();
         shoppingCartPageSteps.click_Proceed_To_Checkout_Button();
@@ -164,18 +182,19 @@ public class CatalogOrderStory  {
         checkoutPageSteps.wait_Till_Success_Page_Is_Uploaded();
         String expectedID = checkoutPageSteps.get_Request_ID();
         for (int i=0; i<approversQty; i++){
-        homePageSteps.click_Main_Menu_Btn();
-        homePageSteps.expand_Select_Different_User_Block();
-        homePageSteps.select_Different_User(approversNames.get(i));
-        homePageSteps.click_Main_Menu_Btn();
-        homePageSteps.check_Acting_User(approversNames.get(i));
-        homePageSteps.expand_My_Documents_Tab();
-        homePageSteps.expand_Approvals_Block();
-        homePageSteps.open_Approve_a_Request_Page();
-        requestsToApprovePageSteps.search_Request_By_ID(expectedID);
-        requestsToApprovePageSteps.check_Search_Results(expectedID);
-        requestsToApprovePageSteps.open_Request_Details_Page();
-        approveRequestDetailsPageSteps.approve_Request();}
+            homePageSteps.click_Main_Menu_Btn();
+            homePageSteps.expand_Select_Different_User_Block();
+            homePageSteps.select_Different_User(approversNames.get(i));
+            homePageSteps.click_Main_Menu_Btn();
+            homePageSteps.check_Acting_User(approversNames.get(i));
+            homePageSteps.expand_My_Documents_Tab();
+            homePageSteps.expand_Approvals_Block();
+            homePageSteps.open_Approve_a_Request_Page();
+            requestsToApprovePageSteps.search_Request_By_ID(expectedID);
+            requestsToApprovePageSteps.check_Search_Results(expectedID);
+            requestsToApprovePageSteps.open_Request_Details_Page();
+            approveRequestDetailsPageSteps.approve_Request();
+        }
         homePageSteps.click_Main_Menu_Btn();
         homePageSteps.logout();
         // Admin part of the test case

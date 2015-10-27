@@ -114,5 +114,15 @@ public class HomePageSteps extends ScenarioSteps {
         homePage.clickApproveARequestLink();
     }
 
+    @Step
+    public boolean search_Product_By_SKU (String SKU){
+        return homePage.searchProductBySKU(SKU);
+    }
+
+    @Step
+    public boolean check_Is_Shopping_Cart_Empty (){
+        return homePage.checkIsShoppingCartEmpty();
+    }
+
 
 }
